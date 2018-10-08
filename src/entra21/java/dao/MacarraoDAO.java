@@ -12,8 +12,6 @@ public class MacarraoDAO {
     private Connection coneccao;
     
     public MacarraoBean obterPeloId(int id) {
-        
-        
         if (coneccao != null) {
             String sql = "SELECT * FROM macarroes WHERE id = ?";
             
@@ -70,5 +68,50 @@ public class MacarraoDAO {
             }
         }
         return -1;
+    }
+    
+    public boolean alterar(MacarraoBean macarrao) {
+        coneccao = Banco.conectar();
+        
+        if (coneccao != null) {
+            String sql = "UPDATE macarroes SET tipo = ?, marca = ?, ";
+                sql += "peso = ?, aldente = ? WHERE id = ?";
+                
+            try {
+                PreparedStatement ps = coneccao.prepareStatement(sql);
+                ps.setString(1, macarrao.getTipo());
+                ps.setString(2, macarrao.getMarca());
+                ps.setDouble(3, macarrao.getPeso());
+                ps.setBoolean(4, macarrao.isAldente());
+                ps.setInt(5, macarrao.getId());
+                
+                return ps.executeUpdate() == 1;
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            } finally {
+                Banco.desconectar();
+            }
+        }
+        return false;
+    }
+    
+    public boolean excluir(int id) {
+        coneccao = Banco.conectar();
+        
+        if (coneccao != null) {
+            String sql = "DELETE FROM macarroes WHERE id = ?";
+            
+            try {
+                PreparedStatement ps = coneccao.prepareStatement(sql);
+                ps.setInt(1, id);
+                
+                return ps.executeUpdate() == 1;
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            } finally {
+                Banco.desconectar();
+            }
+        }
+        return false;
     }
 }

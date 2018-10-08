@@ -9,7 +9,7 @@ public class Banco {
     
     public static Connection conectar() {
         try {
-            Class.forName("java.mysql.jdbc.Driver");
+            Class.forName("com.mysql.jdbc.Driver");
             coneccao = DriverManager.getConnection("jdbc.mysql://localhost/kleiton", "root", "");
             
             return coneccao;
